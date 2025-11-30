@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gradus AI - Презентация Этап 1</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Modern Tech Color Palette - Dark Theme */
+        --bg-dark: #0f1419;
+        --bg-secondary: #1a1f2e;
+        --gradient-blue: #00d4ff;
+        --gradient-purple: #9333ea;
+        --gradient-pink: #ec4899;
+        --gradient-cyan: #06b6d4;
+        --gradient-teal: #14b8a6;
+        --text-light: #e5e7eb;
+        --text-medium: #9ca3af;
+        --accent-neon: #00f0ff;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: var(--bg-dark);
+        overflow-x: hidden;
+        overflow-y: hidden;
+      }
+
+      .presentation {
+        width: 100vw;
+        height: 100vh;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+      }
+
+      .slide {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        padding: 50px 60px;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
+
+      .slide-content {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      /* Slide Progress Indicators */
+      .slide-indicators {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 1000;
+        background: rgba(26, 31, 46, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 12px 20px;
+        border-radius: 30px;
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        opacity: 0.8;
+      }
+
+      .slide-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(156, 163, 175, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .slide-dot:hover {
+        background: rgba(156, 163, 175, 0.7);
+        transform: scale(1.2);
+      }
+
+      .slide-dot.active {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-cyan) 0%,
+          var(--gradient-purple) 100%
+        );
+        width: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+      }
+
+      /* Navigation hint */
+      .nav-hint {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--text-medium);
+        font-size: 14px;
+        z-index: 999;
+        opacity: 0.6;
+        animation: fadeInOut 3s ease-in-out infinite;
+      }
+
+      @keyframes fadeInOut {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+      }
+
+      .tab-button {
+        background: transparent;
+        border: none;
+        color: var(--text-medium);
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        bottom: -2px;
+      }
+
+      .tab-button:hover {
+        color: var(--text-light);
+        background: rgba(0, 212, 255, 0.05);
+      }
+
+      .tab-button.active {
+        color: var(--gradient-cyan);
+        border-bottom-color: var(--gradient-cyan);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Title Slide */
+      .title-slide {
+        background: linear-gradient(
+          135deg,
+          var(--bg-dark) 0%,
+          #1e1b4b 50%,
+          #1e293b 100%
+        );
+        color: var(--text-light);
+        text-align: center;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center !important;
+        align-items: center;
+        overflow: hidden !important;
+      }
+
+      .title-slide h1 {
+        font-size: 72px;
+        margin-bottom: 30px;
+        font-weight: 800;
+        background: linear-gradient(
+          90deg,
+          var(--gradient-cyan) 0%,
+          var(--gradient-purple) 50%,
+          var(--gradient-pink) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .title-slide .subtitle {
+        font-size: 32px;
+        opacity: 0.9;
+        margin-bottom: 50px;
+        color: var(--text-light);
+      }
+
+      .title-slide .stage-badge {
+        background: rgba(147, 51, 234, 0.2);
+        border: 2px solid var(--gradient-purple);
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-size: 24px;
+        display: inline-block;
+        box-shadow: 0 0 30px rgba(147, 51, 234, 0.3);
+      }
+
+      /* Standard Slide Elements */
+      h1 {
+        font-size: 42px;
+        background: linear-gradient(
+          90deg,
+          var(--gradient-cyan) 0%,
+          var(--gradient-purple) 50%,
+          var(--gradient-pink) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 30px;
+        font-weight: 700;
+      }
+
+      h2 {
+        font-size: 28px;
+        background: linear-gradient(
+          90deg,
+          var(--gradient-blue) 0%,
+          var(--gradient-teal) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      h3 {
+        font-size: 24px;
+        color: var(--gradient-cyan);
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 18px;
+        line-height: 1.5;
+        color: var(--text-light);
+        margin-bottom: 12px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-top: 25px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-top: 25px;
+      }
+
+      .card {
+        background: rgba(26, 31, 46, 0.6);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+      }
+
+      .highlight {
+        background: linear-gradient(
+          135deg,
+          rgba(147, 51, 234, 0.2) 0%,
+          rgba(6, 182, 212, 0.2) 100%
+        );
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        color: var(--text-light);
+        padding: 25px;
+        border-radius: 20px;
+        margin: 15px 0;
+        box-shadow: 0 8px 30px rgba(147, 51, 234, 0.3);
+        position: relative;
+      }
+
+      .highlight::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        padding: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--gradient-purple),
+          var(--gradient-cyan)
+        );
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      }
+
+      .stat {
+        font-size: 64px;
+        font-weight: 800;
+        background: linear-gradient(
+          90deg,
+          var(--gradient-cyan) 0%,
+          var(--gradient-purple) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        list-style: none;
+        margin-top: 20px;
+      }
+
+      li {
+        font-size: 17px;
+        padding: 10px 0;
+        padding-left: 0;
+        position: relative;
+        color: var(--text-light);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      li:before {
+        content: "→";
+        color: var(--gradient-cyan);
+        font-weight: bold;
+        line-height: 1.5;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* Project Timeline */
+      .timeline-container {
+        margin: 30px 0;
+        padding: 30px;
+        background: rgba(26, 31, 46, 0.4);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 212, 255, 0.2);
+      }
+
+      .timeline {
+        position: relative;
+        padding: 50px 0 20px 0;
+      }
+
+      .timeline-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: rgba(156, 163, 175, 0.2);
+        border-radius: 4px;
+      }
+
+      .timeline-progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 25%;
+        background: linear-gradient(
+          90deg,
+          var(--gradient-cyan) 0%,
+          var(--gradient-purple) 100%
+        );
+        border-radius: 4px;
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      }
+
+      .timeline-stages {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .stage-marker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 10;
+        position: relative;
+      }
+
+      .stage-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--bg-dark);
+        border: 4px solid rgba(156, 163, 175, 0.3);
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .stage-marker.completed .stage-dot {
+        background: var(--gradient-cyan);
+        border-color: var(--gradient-cyan);
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+      }
+
+      .stage-marker.current .stage-dot {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-purple);
+        border-color: var(--gradient-purple);
+        box-shadow: 0 0 0 8px rgba(147, 51, 234, 0.2),
+          0 0 20px rgba(147, 51, 234, 0.6);
+      }
+
+      .stage-label {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-medium);
+        max-width: 150px;
+        min-height: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .stage-marker.current .stage-label {
+        color: var(--gradient-cyan);
+        font-size: 12px;
+      }
+
+      .we-are-here {
+        position: absolute;
+        top: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(
+          90deg,
+          var(--gradient-purple) 0%,
+          var(--gradient-pink) 100%
+        );
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 4px 15px rgba(147, 51, 234, 0.5),
+          0 0 30px rgba(147, 51, 234, 0.3);
+      }
+
+      .we-are-here:after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid var(--gradient-pink);
+      }
+
+      /* iPhone Mockup */
+      .iphone-mockup {
+        width: 300px;
+        height: 600px;
+        background: #1a1a1a;
+        border-radius: 40px;
+        padding: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+          0 0 30px rgba(0, 212, 255, 0.2);
+        position: relative;
+        margin: 0 auto;
+      }
+
+      .iphone-notch {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 25px;
+        background: #1a1a1a;
+        border-radius: 0 0 15px 15px;
+        z-index: 10;
+      }
+
+      .iphone-screen {
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .iphone-screen img,
+      .iphone-screen video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .placeholder-screen {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        color: var(--text-light);
+        font-size: 14px;
+        text-align: center;
+        padding: 20px;
+      }
+
+      /* Avatar Pages */
+      .avatar-showcase {
+        display: flex;
+        gap: 60px;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+
+      .avatar-profile {
+        flex: 1;
+        max-width: 500px;
+      }
+
+      .avatar-phone {
+        flex: 0 0 auto;
+      }
+
+      .avatar-name {
+        font-size: 56px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+
+      .avatar-role {
+        font-size: 28px;
+        color: var(--text-medium);
+        margin-bottom: 30px;
+      }
+
+      .avatar-traits {
+        margin-top: 30px;
+      }
+
+      .trait-item {
+        display: flex;
+        align-items: start;
+        margin-bottom: 20px;
+      }
+
+      .trait-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      .trait-text {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+      .avatar-color-maya {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-pink) 0%,
+          var(--gradient-purple) 100%
+        );
+      }
+
+      .avatar-color-alex {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-cyan) 0%,
+          var(--gradient-teal) 100%
+        );
+      }
+
+      .iphone-clickable {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .iphone-clickable:hover {
+        transform: scale(1.05);
+      }
+
+      /* Fullscreen Modal */
+      .fullscreen-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .fullscreen-modal.active {
+        display: flex;
+      }
+
+      .fullscreen-content {
+        max-width: 90vw;
+        max-height: 90vh;
+      }
+
+      .fullscreen-content img,
+      .fullscreen-content video {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background: white;
+        color: #1a1a1a;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      /* Architecture Diagram */
+      .architecture {
+        margin-top: 30px;
+      }
+
+      .arch-layer {
+        background: rgba(26, 31, 46, 0.6);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border-left: 5px solid var(--gradient-cyan);
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+      }
+
+      .arch-layer h3 {
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+
+      .arch-components {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .component {
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        color: var(--text-light);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(0, 212, 255, 0.1);
+      }
+
+      /* Efficiency Comparison */
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-top: 30px;
+      }
+
+      .comparison-side {
+        text-align: center;
+        padding: 40px;
+        border-radius: 15px;
+      }
+
+      .comparison-side.old {
+        background: rgba(220, 38, 38, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+      }
+
+      .comparison-side.new {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+
+      .cost-amount {
+        font-size: 72px;
+        font-weight: 800;
+        margin: 20px 0;
+      }
+
+      .comparison-side.old .cost-amount {
+        color: #ef4444;
+      }
+
+      .comparison-side.new .cost-amount {
+        background: linear-gradient(
+          90deg,
+          var(--gradient-teal) 0%,
+          var(--gradient-cyan) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .savings-badge {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-teal) 0%,
+          var(--gradient-cyan) 100%
+        );
+        color: white;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-size: 28px;
+        font-weight: 700;
+        display: inline-block;
+        margin-top: 30px;
+        box-shadow: 0 4px 20px rgba(20, 184, 166, 0.4);
+      }
+
+      /* ========================================
+         MOBILE RESPONSIVE DESIGN
+         Desktop design preserved above 1024px
+         ======================================== */
+
+      /* Tablet: 768px - 1023px */
+      @media screen and (max-width: 1023px) {
+        .slide {
+          padding: 40px 30px;
+        }
+
+        h1 {
+          font-size: 28px !important;
+        }
+
+        h2 {
+          font-size: 20px !important;
+        }
+
+        h3 {
+          font-size: 16px !important;
+        }
+
+        .grid-2 {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .grid-3 {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .comparison {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .iphone-mockup {
+          width: 220px !important;
+          height: 440px !important;
+        }
+
+        .slide-indicators {
+          bottom: 20px;
+          padding: 8px 15px;
+          gap: 8px;
+        }
+
+        .slide-dot {
+          width: 8px;
+          height: 8px;
+        }
+
+        .slide-dot.active {
+          width: 24px;
+        }
+
+        .avatar-showcase {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .timeline-container {
+          padding: 15px;
+        }
+
+        .stage-label {
+          font-size: 10px !important;
+          max-width: 120px;
+        }
+      }
+
+      /* Mobile: 320px - 767px */
+      @media screen and (max-width: 767px) {
+        .slide {
+          padding: 30px 20px;
+          justify-content: flex-start;
+        }
+
+        .title-slide {
+          padding: 40px 20px;
+        }
+
+        .title-slide h1 {
+          font-size: 48px !important;
+        }
+
+        .title-slide .subtitle {
+          font-size: 20px !important;
+          margin-bottom: 20px !important;
+        }
+
+        .title-slide .stage-badge {
+          font-size: 16px !important;
+          padding: 10px 25px !important;
+        }
+
+        h1 {
+          font-size: 24px !important;
+          margin-bottom: 15px !important;
+        }
+
+        h2 {
+          font-size: 18px !important;
+          margin-bottom: 10px !important;
+        }
+
+        h3 {
+          font-size: 14px !important;
+          margin-bottom: 8px !important;
+        }
+
+        p {
+          font-size: 14px !important;
+          line-height: 1.4;
+        }
+
+        li {
+          font-size: 13px !important;
+          padding: 4px 0 !important;
+        }
+
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+          gap: 15px !important;
+        }
+
+        .card {
+          padding: 15px !important;
+        }
+
+        .highlight {
+          padding: 15px !important;
+          margin: 10px 0 !important;
+        }
+
+        .comparison {
+          grid-template-columns: 1fr;
+          gap: 15px !important;
+          margin-top: 10px !important;
+        }
+
+        .comparison-side {
+          padding: 20px !important;
+        }
+
+        .cost-amount {
+          font-size: 42px !important;
+          margin: 10px 0 !important;
+        }
+
+        .savings-badge {
+          font-size: 18px !important;
+          padding: 10px 20px !important;
+          margin-top: 15px !important;
+        }
+
+        .stat {
+          font-size: 36px !important;
+        }
+
+        /* Timeline adjustments */
+        .timeline-container {
+          padding: 15px !important;
+          margin: 10px 0 !important;
+        }
+
+        .timeline {
+          padding: 40px 0 15px 0 !important;
+        }
+
+        .timeline-stages {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .stage-marker {
+          margin: 0 10px 20px 10px;
+        }
+
+        .stage-label {
+          font-size: 9px !important;
+          max-width: 80px;
+          min-height: auto !important;
+        }
+
+        .stage-dot {
+          width: 20px;
+          height: 20px;
+          margin-bottom: 10px;
+        }
+
+        .stage-marker.current .stage-dot {
+          width: 28px;
+          height: 28px;
+        }
+
+        .we-are-here {
+          font-size: 10px !important;
+          padding: 5px 12px !important;
+          top: -35px;
+        }
+
+        /* iPhone mockup mobile optimization */
+        .iphone-mockup {
+          width: 200px !important;
+          height: 400px !important;
+          margin: 0 auto;
+        }
+
+        .iphone-notch {
+          width: 100px;
+          height: 20px;
+        }
+
+        .avatar-showcase {
+          flex-direction: column;
+          gap: 20px;
+          align-items: center;
+        }
+
+        .avatar-profile {
+          max-width: 100%;
+        }
+
+        .avatar-name {
+          font-size: 36px !important;
+        }
+
+        .avatar-role {
+          font-size: 20px !important;
+        }
+
+        .trait-item {
+          margin-bottom: 15px;
+        }
+
+        .trait-icon {
+          width: 24px;
+          height: 24px;
+          margin-right: 10px;
+        }
+
+        .trait-text {
+          font-size: 14px !important;
+        }
+
+        /* Tabs mobile optimization */
+        .tabs {
+          flex-wrap: wrap;
+          gap: 8px !important;
+          margin-bottom: 12px !important;
+        }
+
+        .tab-button {
+          padding: 8px 15px !important;
+          font-size: 12px !important;
+          flex: 1 1 45%;
+        }
+
+        /* Architecture layers */
+        .arch-layer {
+          padding: 10px !important;
+          margin-bottom: 8px !important;
+        }
+
+        .arch-layer h3 {
+          font-size: 13px !important;
+        }
+
+        .arch-layer p {
+          font-size: 11px !important;
+        }
+
+        .arch-components {
+          gap: 6px !important;
+        }
+
+        .component {
+          font-size: 11px !important;
+          padding: 5px 10px !important;
+        }
+
+        /* Table mobile optimization */
+        table {
+          font-size: 12px !important;
+        }
+
+        table td {
+          padding: 5px !important;
+        }
+
+        /* Slide indicators mobile */
+        .slide-indicators {
+          bottom: 15px;
+          padding: 8px 12px;
+          gap: 6px;
+        }
+
+        .slide-dot {
+          width: 6px;
+          height: 6px;
+        }
+
+        .slide-dot.active {
+          width: 18px;
+        }
+
+        .nav-hint {
+          bottom: 70px;
+          font-size: 12px;
+        }
+
+        /* Modal fullscreen adjustments */
+        .fullscreen-content img,
+        .fullscreen-content video {
+          max-width: 95vw;
+          max-height: 80vh;
+        }
+
+        .close-modal {
+          top: 20px;
+          right: 20px;
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      /* Extra small mobile: 320px - 480px */
+      @media screen and (max-width: 480px) {
+        .slide {
+          padding: 25px 15px;
+        }
+
+        .title-slide h1 {
+          font-size: 40px !important;
+        }
+
+        .title-slide .subtitle {
+          font-size: 18px !important;
+        }
+
+        h1 {
+          font-size: 22px !important;
+        }
+
+        h2 {
+          font-size: 16px !important;
+        }
+
+        h3 {
+          font-size: 13px !important;
+        }
+
+        p,
+        li {
+          font-size: 12px !important;
+        }
+
+        .card {
+          padding: 12px !important;
+        }
+
+        .iphone-mockup {
+          width: 180px !important;
+          height: 360px !important;
+        }
+
+        .stage-marker {
+          margin: 0 5px 15px 5px;
+        }
+
+        .stage-label {
+          font-size: 8px !important;
+          max-width: 70px;
+        }
+
+        .tab-button {
+          font-size: 11px !important;
+          padding: 7px 12px !important;
+        }
+
+        .cost-amount {
+          font-size: 36px !important;
+        }
+
+        .stat {
+          font-size: 32px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation">
+      <!-- Slide 1: Title -->
+      <div class="slide title-slide">
+        <h1>Gradus AI</h1>
+        <div class="subtitle" style="margin-bottom: 30px; font-size: 28px">
+          Платформа автоматизации контент-маркетинга на базе ИИ
+        </div>
+        <div class="stage-badge" style="font-size: 20px; padding: 12px 35px">
+          Этап 1: Генерация и распространение контента
+        </div>
+      </div>
+
+      <!-- Slide 2: Project Vision - 4 Stages -->
+      <div class="slide">
+        <h1 style="font-size: 34px; margin-bottom: 18px">
+          Видение: 4-этапная AI-платформа
+        </h1>
+
+        <div class="timeline-container" style="margin: 15px 0; padding: 20px">
+          <div class="timeline">
+            <div class="timeline-line">
+              <div class="timeline-progress"></div>
+            </div>
+
+            <div class="timeline-stages">
+              <div class="stage-marker current">
+                <div class="we-are-here">МЫ ЗДЕСЬ</div>
+                <div class="stage-dot"></div>
+                <div class="stage-label" style="font-size: 11px">
+                  <strong>Этап 1</strong><br />
+                  Контентная<br />
+                  система + аватары
+                </div>
+              </div>
+
+              <div class="stage-marker">
+                <div class="stage-dot"></div>
+                <div class="stage-label" style="font-size: 11px">
+                  <strong>Этап 2</strong><br />
+                  Генерация<br />
+                  лидов (Facebook)
+                </div>
+              </div>
+
+              <div class="stage-marker">
+                <div class="stage-dot"></div>
+                <div class="stage-label" style="font-size: 11px">
+                  <strong>Этап 3</strong><br />
+                  Обучение<br />
+                  отдела продаж
+                </div>
+              </div>
+
+              <div class="stage-marker">
+                <div class="stage-dot"></div>
+                <div class="stage-label" style="font-size: 11px">
+                  <strong>Этап 4</strong><br />
+                  HR-ассистент<br />
+                  по найму
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 15px; gap: 15px">
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 8px">
+              🎯 Этап 1: Контентный движок
+            </h3>
+            <p style="font-size: 13px; line-height: 1.4">
+              AI-аватары (Maya + Alex) автоматически создают маркетинговый
+              контент. Формируем аудиторию и авторитет бренда.
+            </p>
+          </div>
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 8px">
+              📊 Этап 2: Генерация лидов
+            </h3>
+            <p style="font-size: 13px; line-height: 1.4">
+              Maya взаимодействует с менеджерами отелей на Facebook/LinkedIn.
+              Генерирует квалифицированные лиды для поставщиков.
+            </p>
+          </div>
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 8px">
+              🎓 Этап 3: Обучение продавцов
+            </h3>
+            <p style="font-size: 13px; line-height: 1.4">
+              Telegram-бот обучает продавцов продуктам, отвечает на вопросы,
+              тестирует знания.
+            </p>
+          </div>
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 8px">
+              👥 Этап 4: HR-ассистент
+            </h3>
+            <p style="font-size: 13px; line-height: 1.4">
+              Автоматизированный скрининг кандидатов и взаимодействие для
+              позиций в индустрии гостеприимства.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Stage 1 Deep Dive -->
+      <div class="slide">
+        <h1 style="font-size: 33px; margin-bottom: 15px">
+          Этап 1: Автоматизированная контентная система
+        </h1>
+
+        <div class="highlight" style="padding: 18px; margin: 10px 0">
+          <h2 style="color: white; margin-bottom: 12px; font-size: 20px">
+            Что мы создаем прямо сейчас
+          </h2>
+          <div class="grid-2" style="gap: 20px">
+            <div>
+              <p style="color: white; font-size: 14px; margin-bottom: 8px">
+                <strong>Объём контента:</strong>
+              </p>
+              <ul style="color: white">
+                <li style="font-size: 13px; padding: 6px 0">
+                  7 статей в неделю
+                </li>
+                <li style="font-size: 13px; padding: 6px 0">
+                  10+ видео в месяц с AI-аватарами
+                </li>
+                <li style="font-size: 13px; padding: 6px 0">
+                  Ежедневные посты в соцсетях
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p style="color: white; font-size: 14px; margin-bottom: 8px">
+                <strong>Стратегия распространения:</strong>
+              </p>
+              <ul style="color: white">
+                <li style="font-size: 13px; padding: 6px 0">
+                  Instagram Reels → переход на Facebook
+                </li>
+                <li style="font-size: 13px; padding: 6px 0">
+                  TikTok → переход на Facebook
+                </li>
+                <li style="font-size: 13px; padding: 6px 0">
+                  Facebook (центральный хаб)
+                </li>
+                <li style="font-size: 13px; padding: 6px 0">
+                  Цель: Формирование аудитории на всех платформах
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 15px; gap: 15px">
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 10px">
+              🎯 Целевая аудитория
+            </h3>
+            <ul>
+              <li style="font-size: 13px; padding: 5px 0">
+                Менеджеры отелей по напиткам
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Владельцы премиальных баров
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                F&B директора ресторанов
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Менеджеры дистрибуции
+              </li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 10px">📍 География</h3>
+            <ul>
+              <li style="font-size: 13px; padding: 5px 0">
+                Первичный: Украина
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Вторичный: расширение в ЕС
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">~2,500 отелей</li>
+              <li style="font-size: 13px; padding: 5px 0">
+                ~5,000 премиальных баров
+              </li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 15px">
+            <h3 style="font-size: 17px; margin-bottom: 10px">
+              💰 Бизнес-модель
+            </h3>
+            <ul>
+              <li style="font-size: 13px; padding: 5px 0">
+                Каждый 10-й пост: интеграция бренда
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Нативная реклама (Dovbush)
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Бесплатная реклама для аудитории
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Узнаваемость бренда в B2B
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: System Architecture with Workflow -->
+      <div class="slide">
+        <h1 style="font-size: 28px; margin-bottom: 8px">
+          Архитектура системы и рабочий процесс
+        </h1>
+
+        <div class="grid-2" style="gap: 25px; align-items: center">
+          <div>
+            <!-- Tabs Navigation -->
+            <div class="tabs" style="margin-bottom: 10px">
+              <button
+                class="tab-button active"
+                onclick="switchTab(event, 'sources-tab')"
+                style="padding: 8px 18px; font-size: 13px"
+              >
+                Источники контента
+              </button>
+              <button
+                class="tab-button"
+                onclick="switchTab(event, 'workflow-tab')"
+                style="padding: 8px 18px; font-size: 13px"
+              >
+                Автоматический процесс
+              </button>
+            </div>
+
+            <!-- Tab 1: Content Sources -->
+            <div id="sources-tab" class="tab-content active">
+              <h2 style="font-size: 17px; margin-bottom: 8px">
+                6 источников контента
+              </h2>
+
+              <div style="margin-top: 8px">
+                <h3 style="font-size: 14px; margin-bottom: 5px">
+                  Англоязычные источники (требуют перевода):
+                </h3>
+                <div class="arch-layer" style="margin-top: 5px; padding: 12px">
+                  <div class="arch-components">
+                    <span
+                      class="component"
+                      style="font-size: 13px; padding: 6px 12px"
+                      >The Spirits Business</span
+                    >
+                    <span
+                      class="component"
+                      style="font-size: 13px; padding: 6px 12px"
+                      >Just Drinks</span
+                    >
+                    <span
+                      class="component"
+                      style="font-size: 13px; padding: 6px 12px"
+                      >The Drinks Report</span
+                    >
+                  </div>
+                  <p
+                    style="
+                      font-size: 11px;
+                      margin-top: 10px;
+                      color: var(--text-medium);
+                    "
+                  >
+                    Новости индустрии, рыночные тренды и обновления брендов от
+                    ведущих мировых изданий
+                  </p>
+                </div>
+              </div>
+
+              <div style="margin-top: 15px">
+                <h3 style="font-size: 14px; margin-bottom: 5px">
+                  Украинские источники (напрямую):
+                </h3>
+                <div class="arch-layer" style="margin-top: 5px; padding: 12px">
+                  <div class="arch-components">
+                    <span
+                      class="component"
+                      style="font-size: 13px; padding: 6px 12px"
+                      >Delo.ua</span
+                    >
+                    <span
+                      class="component"
+                      style="font-size: 13px; padding: 6px 12px"
+                      >MinFin.ua</span
+                    >
+                    <span
+                      class="component"
+                      style="font-size: 13px; padding: 6px 12px"
+                      >Restorator.ua</span
+                    >
+                  </div>
+                  <p
+                    style="
+                      font-size: 11px;
+                      margin-top: 10px;
+                      color: var(--text-medium);
+                    "
+                  >
+                    Локальные бизнес-новости, обновления индустрии
+                    гостеприимства и рыночная аналитика
+                  </p>
+                </div>
+              </div>
+
+              <div
+                style="
+                  margin-top: 15px;
+                  padding: 12px;
+                  background: rgba(0, 212, 255, 0.05);
+                  border-radius: 10px;
+                  border: 1px solid rgba(0, 212, 255, 0.15);
+                "
+              >
+                <h3
+                  style="
+                    font-size: 13px;
+                    margin-bottom: 6px;
+                    color: var(--gradient-cyan);
+                  "
+                >
+                  📊 Частота сбора
+                </h3>
+                <p style="font-size: 11px; line-height: 1.4">
+                  • Автоматический сбор каждые 6 часов<br />
+                  • ~50-100 статей в неделю<br />
+                  • AI фильтрует наиболее релевантный контент
+                </p>
+              </div>
+            </div>
+
+            <!-- Tab 2: Workflow -->
+            <div id="workflow-tab" class="tab-content">
+              <h2 style="font-size: 17px; margin-bottom: 8px">
+                Процесс из 5 шагов
+              </h2>
+
+              <div class="architecture">
+                <div
+                  class="arch-layer"
+                  style="padding: 8px; margin-bottom: 4px"
+                >
+                  <h3 style="font-size: 13px; margin-bottom: 3px">
+                    1. Сбор данных
+                  </h3>
+                  <p style="font-size: 11px; margin-top: 3px; line-height: 1.3">
+                    Каждые 6 часов: Сбор последних статей из всех 6 источников
+                  </p>
+                </div>
+
+                <div
+                  style="
+                    text-align: center;
+                    padding: 2px 0;
+                    color: var(--gradient-cyan);
+                    font-size: 16px;
+                    font-weight: bold;
+                  "
+                >
+                  ↓
+                </div>
+
+                <div
+                  class="arch-layer"
+                  style="padding: 8px; margin-bottom: 4px"
+                >
+                  <h3 style="font-size: 13px; margin-bottom: 3px">
+                    2. Перевод
+                  </h3>
+                  <p style="font-size: 11px; margin-top: 3px; line-height: 1.3">
+                    Claude API: Английский → Украинский (3 источника)
+                  </p>
+                </div>
+
+                <div
+                  style="
+                    text-align: center;
+                    padding: 2px 0;
+                    color: var(--gradient-cyan);
+                    font-size: 16px;
+                    font-weight: bold;
+                  "
+                >
+                  ↓
+                </div>
+
+                <div
+                  class="arch-layer"
+                  style="padding: 8px; margin-bottom: 4px"
+                >
+                  <h3 style="font-size: 13px; margin-bottom: 3px">
+                    3. Генерация изображений
+                  </h3>
+                  <p style="font-size: 11px; margin-top: 3px; line-height: 1.3">
+                    DALL-E: Создание релевантных визуалов для каждой статьи
+                  </p>
+                </div>
+
+                <div
+                  style="
+                    text-align: center;
+                    padding: 2px 0;
+                    color: var(--gradient-cyan);
+                    font-size: 16px;
+                    font-weight: bold;
+                  "
+                >
+                  ↓
+                </div>
+
+                <div
+                  class="arch-layer"
+                  style="padding: 8px; margin-bottom: 4px"
+                >
+                  <h3 style="font-size: 13px; margin-bottom: 3px">
+                    4. Одобрение (Telegram)
+                  </h3>
+                  <p style="font-size: 11px; margin-top: 3px; line-height: 1.3">
+                    Человеческая проверка через Telegram-сообщения
+                  </p>
+                </div>
+
+                <div
+                  style="
+                    text-align: center;
+                    padding: 2px 0;
+                    color: var(--gradient-cyan);
+                    font-size: 16px;
+                    font-weight: bold;
+                  "
+                >
+                  ↓
+                </div>
+
+                <div
+                  class="arch-layer"
+                  style="padding: 8px; margin-bottom: 4px"
+                >
+                  <h3 style="font-size: 13px; margin-bottom: 3px">
+                    5. Планирование и публикация
+                  </h3>
+                  <p style="font-size: 11px; margin-top: 3px; line-height: 1.3">
+                    Автоматическое распространение в Instagram, TikTok, Facebook
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <h2 style="font-size: 17px; margin-bottom: 6px">
+              Одобрение через Telegram
+            </h2>
+            <p style="text-align: center; margin-bottom: 12px; font-size: 11px">
+              Весь контент проверяется перед публикацией
+            </p>
+
+            <div class="iphone-mockup" style="width: 280px; height: 560px">
+              <div class="iphone-notch"></div>
+              <div class="iphone-screen">
+                <img
+                  src="assets/tg_notification.jpeg"
+                  alt="Telegram Approval Interface"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: GradusMedia Facebook Page -->
+      <div class="slide">
+        <h1>GradusMedia</h1>
+
+        <div
+          style="
+            width: 100%;
+            height: calc(100vh - 200px);
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <img
+            src="assets/gradusmediafb.png"
+            alt="GradusMedia Facebook Page"
+            onclick="window.open('https://www.facebook.com/gradusmedia', '_blank')"
+            style="
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+              border-radius: 15px;
+              box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+              cursor: pointer;
+              transition: transform 0.3s ease;
+            "
+            onmouseover="this.style.transform='scale(1.02)'"
+            onmouseout="this.style.transform='scale(1)'"
+          />
+        </div>
+      </div>
+
+      <!-- Slide 6: Meet Maya Gradus -->
+      <div class="slide">
+        <div class="avatar-showcase">
+          <div class="avatar-profile">
+            <h1 class="avatar-name">Maya Gradus</h1>
+            <div class="avatar-role" style="font-size: 26px">
+              Эксперт по маркетингу и индустрии
+            </div>
+
+            <div class="avatar-traits">
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-maya">👤</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Возраст и бэкграунд:</strong> 28-32 года, украинская
+                  бизнесвумен
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-maya">💼</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Стиль:</strong> Деловой кэжуал (блейзеры, блузы),
+                  блондинка, современный профессионал
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-maya">🎤</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Голос:</strong> Энергичный блогер, искрометная
+                  личность, отличное чувство юмора
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-maya">💡</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Личность:</strong> Дружелюбная, но убедительная, может
+                  оспаривать точки зрения, инсайдерские знания
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-maya">🎯</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Роль:</strong> Рыночные тренды, новости индустрии,
+                  бизнес-инсайты, сторителлинг бренда
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-maya">🌍</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Будущее:</strong> Будет взаимодействовать с клиентами
+                  на LinkedIn/Facebook, BD-аутрич, построение отношений
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="avatar-phone">
+            <div
+              class="iphone-mockup iphone-clickable"
+              onclick="openFullscreen('maya')"
+            >
+              <div class="iphone-notch"></div>
+              <div class="iphone-screen">
+                <video
+                  src="assets/Maya_trends.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  style="width: 100%; height: 100%; object-fit: cover"
+                ></video>
+              </div>
+            </div>
+            <p
+              style="
+                text-align: center;
+                margin-top: 15px;
+                font-size: 13px;
+                color: var(--text-medium);
+              "
+            >
+              Нажмите на телефон для полноэкранного просмотра
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Meet Alex Gradus -->
+      <div class="slide">
+        <div class="avatar-showcase">
+          <div class="avatar-profile">
+            <h1 class="avatar-name">Alex Gradus</h1>
+            <div class="avatar-role" style="font-size: 26px">
+              Премиальный бармен и миксолог
+            </div>
+
+            <div class="avatar-traits">
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-alex">👤</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Возраст и бэкграунд:</strong> 32-35 лет, мастер-
+                  бармен высокого класса
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-alex">💼</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Стиль:</strong> Черная жилетка/рубашка,
+                  профессиональная барная одежда, темные волосы, утонченный вид
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-alex">🎤</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Голос:</strong> Уверенный авторитет, спокойная
+                  экспертиза, средне-низкий тембр, размеренный темп
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-alex">💡</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Личность:</strong> Знающий инсайдер, делящийся
+                  секретами, утонченный, но доступный
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-alex">🍸</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Роль:</strong> Рецепты коктейлей, барменские техники,
+                  обучение продуктам, маржинальность
+                </div>
+              </div>
+
+              <div class="trait-item">
+                <div class="trait-icon avatar-color-alex">💰</div>
+                <div class="trait-text" style="font-size: 17px">
+                  <strong>Фокус:</strong> Бизнес-ориентированная миксология,
+                  анализ затрат, стратегии прибыльности бара
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="avatar-phone">
+            <div
+              class="iphone-mockup iphone-clickable"
+              onclick="openFullscreen('alex')"
+            >
+              <div class="iphone-notch"></div>
+              <div class="iphone-screen">
+                <video
+                  src="assets/Alex_Gradus_Cocktail.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  style="width: 100%; height: 100%; object-fit: cover"
+                ></video>
+              </div>
+            </div>
+            <p
+              style="
+                text-align: center;
+                margin-top: 15px;
+                font-size: 13px;
+                color: var(--text-medium);
+              "
+            >
+              Нажмите на телефон для полноэкранного просмотра
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Efficiency Breakthrough -->
+      <div class="slide">
+        <h1 style="font-size: 30px; margin-bottom: 12px">
+          Эффективность: AI против традиционной команды
+        </h1>
+
+        <div class="comparison" style="gap: 20px; margin-top: 15px">
+          <div class="comparison-side old" style="padding: 25px">
+            <h2 style="color: #ef4444; font-size: 20px; margin-bottom: 12px">
+              Традиционная команда
+            </h2>
+            <div class="cost-amount" style="font-size: 56px; margin: 15px 0">
+              $2,000-3,000
+            </div>
+            <p style="font-size: 13px; margin-bottom: 15px">в месяц</p>
+
+            <ul style="text-align: left; margin-top: 15px">
+              <li style="font-size: 13px; padding: 4px 0">
+                Контент-райтер ($800-1,200)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Видеопродюсер ($500-1,000)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Актер озвучки ($300-500)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                SMM-менеджер ($400-800)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Непостоянное качество
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Ограниченная масштабируемость
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Зависимость от людей
+              </li>
+            </ul>
+          </div>
+
+          <div class="comparison-side new" style="padding: 25px">
+            <h2 style="font-size: 20px; margin-bottom: 12px">
+              Система Gradus AI
+            </h2>
+            <div class="cost-amount" style="font-size: 56px; margin: 15px 0">
+              $115-200
+            </div>
+            <p style="font-size: 13px; margin-bottom: 15px">в месяц</p>
+
+            <ul style="text-align: left; margin-top: 15px">
+              <li style="font-size: 13px; padding: 4px 0">
+                Claude API ($20-50)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                HeyGen Business ($89)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Railway хостинг ($10-20)
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">Midjourney ($10)</li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Стабильная работа 24/7
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Бесконечная масштабируемость
+              </li>
+              <li style="font-size: 13px; padding: 4px 0">
+                Без больничных и отпусков
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="savings-badge"
+          style="margin-top: 15px; padding: 12px 25px; font-size: 20px"
+        >
+          💰 Снижение затрат на 95%+
+        </div>
+      </div>
+
+      <!-- Slide 8: Growth Strategy -->
+      <div class="slide">
+        <h1 style="font-size: 30px; margin-bottom: 12px">
+          Стратегия роста Этапа 1
+        </h1>
+
+        <div class="grid-2" style="gap: 20px">
+          <div class="card" style="padding: 18px">
+            <h2 style="font-size: 20px; margin-bottom: 12px">
+              Целевые показатели
+            </h2>
+            <div class="stat" style="font-size: 48px; margin-bottom: 8px">
+              1,000
+            </div>
+            <p style="font-size: 14px; margin-bottom: 12px">
+              Активных подписчиков за 3 месяца
+            </p>
+
+            <ul style="margin-top: 10px">
+              <li style="font-size: 13px; padding: 5px 0">Целевой ER 3-5%</li>
+              <li style="font-size: 13px; padding: 5px 0">
+                50+ комментариев/DM от целевой аудитории
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                10+ входящих запросов от отелей/баров
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Стабильная работа системы 30+ дней
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding: 18px">
+            <h2 style="font-size: 20px; margin-bottom: 12px">
+              Распределение бюджета
+            </h2>
+            <ul style="margin-top: 10px">
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>AI-инструменты:</strong> €115-200/мес
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>Реклама:</strong> €300/мес
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>Итого:</strong> €415-500/мес
+              </li>
+            </ul>
+
+            <div
+              style="
+                margin-top: 15px;
+                padding: 12px;
+                background: rgba(20, 184, 166, 0.1);
+                border-radius: 10px;
+                border: 1px solid rgba(20, 184, 166, 0.3);
+              "
+            >
+              <strong style="font-size: 13px">Микс роста:</strong>
+              <p style="margin-top: 8px; font-size: 12px">
+                70% Органика + 30% Реклама
+              </p>
+              <p
+                style="
+                  font-size: 11px;
+                  margin-top: 6px;
+                  color: var(--text-medium);
+                "
+              >
+                Фокус: Качественное вовлечение, а не метрики тщеславия
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight" style="margin-top: 15px; padding: 15px">
+          <h2 style="color: white; font-size: 18px; margin-bottom: 8px">
+            Успех = Путь к Этапу 2
+          </h2>
+          <p style="color: white; font-size: 13px">
+            Когда достигнем 1,000 активных подписчиков + доказанное качество
+            контента → Запускаем сервис генерации лидов для поставщиков напитков
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 9: Current Status & Challenges -->
+      <div class="slide">
+        <h1 style="font-size: 30px; margin-bottom: 15px">
+          Текущий статус и усвоенные уроки
+        </h1>
+
+        <div class="grid-2" style="gap: 20px">
+          <div
+            class="card"
+            style="
+              background: rgba(34, 197, 94, 0.1);
+              border: 1px solid rgba(34, 197, 94, 0.3);
+              padding: 18px;
+            "
+          >
+            <h2 style="font-size: 20px; margin-bottom: 12px">
+              ✅ Что работает
+            </h2>
+            <ul>
+              <li style="font-size: 13px; padding: 5px 0">
+                Пайплайн сбора контента работает
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Перевод (Украинский ↔ Английский) стабилен
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Интеграция Claude API успешна
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Генерация скриптов для аватаров работает хорошо
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Процесс одобрения через Telegram протестирован
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                Структура базы данных надежна (PostgreSQL)
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="card"
+            style="
+              background: rgba(251, 146, 60, 0.1);
+              border: 1px solid rgba(251, 146, 60, 0.3);
+              padding: 18px;
+            "
+          >
+            <h2 style="color: #fb923c; font-size: 20px; margin-bottom: 12px">
+              ⚠️ Вызовы и решения
+            </h2>
+            <ul>
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>Facebook:</strong> Лимиты публикаций → Решение: Макс. 1
+                пост в день
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>LinkedIn:</strong> API недоступен частным разработчикам
+                → Решение: Повтор с корпоративными данными
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>Генерация видео:</strong> Тестирование тайминга
+                интеграции HeyGen
+              </li>
+              <li style="font-size: 13px; padding: 5px 0">
+                <strong>Контроль качества:</strong> Обязательна человеческая
+                проверка перед публикацией
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Next 90 Days - Roadmap -->
+      <div class="slide">
+        <h1 style="font-size: 30px; margin-bottom: 12px">
+          Следующие шаги: Дорожная карта на 90 дней
+        </h1>
+
+        <div class="grid-3" style="gap: 15px">
+          <div class="card" style="padding: 15px">
+            <h2 style="font-size: 19px; margin-bottom: 8px">Декабрь</h2>
+            <h3 style="font-size: 15px; margin-bottom: 10px">Стабилизация</h3>
+            <ul>
+              <li style="font-size: 12px; padding: 4px 0">
+                Деплой на Railway (продакшен)
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Финализация интерфейса Telegram
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Завершение интеграции HeyGen
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Тестирование полного процесса
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Начало органических публикаций (7/нед)
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Повторная попытка доступа LinkedIn API
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding: 15px">
+            <h2 style="font-size: 19px; margin-bottom: 8px">Январь</h2>
+            <h3 style="font-size: 15px; margin-bottom: 10px">
+              Ускорение роста
+            </h3>
+            <ul>
+              <li style="font-size: 12px; padding: 4px 0">
+                Запуск рекламных кампаний
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Добавление видео (Maya + Alex)
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Мониторинг метрик вовлечения
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Создание email-базы из подписчиков
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Оптимизация расписания публикаций
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Тестирование постов с брендами
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding: 15px">
+            <h2 style="font-size: 19px; margin-bottom: 8px">Февраль</h2>
+            <h3 style="font-size: 15px; margin-bottom: 10px">
+              Оптимизация и подготовка
+            </h3>
+            <ul>
+              <li style="font-size: 12px; padding: 4px 0">
+                Достижение 1,000 подписчиков
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Анализ лучшего контента
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Улучшение персонажей аватаров
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Документирование результатов
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Подготовка питча Этапа 2
+              </li>
+              <li style="font-size: 12px; padding: 4px 0">
+                Определение пилотных клиентов для Этапа 2
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 15px;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(
+              135deg,
+              rgba(147, 51, 234, 0.2) 0%,
+              rgba(6, 182, 212, 0.2) 100%
+            );
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+          "
+        >
+          <h2
+            style="
+              color: var(--text-light);
+              margin-bottom: 8px;
+              font-size: 18px;
+            "
+          >
+            Критический путь к Этапу 2
+          </h2>
+          <p style="font-size: 14px">
+            Успех Этапа 1 → Запуск сервиса генерации лидов → Начало получения
+            дохода
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 11: Financial Overview -->
+      <div class="slide">
+        <h1 style="font-size: 30px; margin-bottom: 12px">
+          Финансовый обзор: Этап 1
+        </h1>
+
+        <div class="grid-2" style="gap: 20px">
+          <div class="card" style="padding: 18px">
+            <h2 style="font-size: 20px; margin-bottom: 10px">
+              Ежемесячные операционные затраты
+            </h2>
+            <table style="width: 100%; margin-top: 10px; font-size: 13px">
+              <tr style="border-bottom: 2px solid rgba(0, 212, 255, 0.3)">
+                <td style="padding: 6px; font-weight: 600">Статья</td>
+                <td style="padding: 6px; text-align: right; font-weight: 600">
+                  Стоимость
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
+                <td style="padding: 6px">Claude API</td>
+                <td style="padding: 6px; text-align: right">$20-50</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
+                <td style="padding: 6px">HeyGen Business</td>
+                <td style="padding: 6px; text-align: right">$89</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
+                <td style="padding: 6px">Railway Хостинг</td>
+                <td style="padding: 6px; text-align: right">$10-20</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
+                <td style="padding: 6px">DALL-E ($0.04/изобр.)</td>
+                <td style="padding: 6px; text-align: right">$10-15</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
+                <td style="padding: 6px">Реклама (рост)</td>
+                <td style="padding: 6px; text-align: right">$300</td>
+              </tr>
+              <tr style="border-top: 2px solid var(--gradient-cyan)">
+                <td style="padding: 6px; font-weight: 700">Итого</td>
+                <td
+                  style="
+                    padding: 6px;
+                    text-align: right;
+                    font-weight: 700;
+                    color: var(--gradient-cyan);
+                  "
+                >
+                  $429-474/мес
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="card" style="padding: 18px">
+            <h2 style="font-size: 20px; margin-bottom: 10px">
+              Инвестиции на 6 месяцев
+            </h2>
+            <div class="stat" style="font-size: 42px; margin-bottom: 8px">
+              €2,300-2,600
+            </div>
+            <p style="font-size: 13px; margin-bottom: 12px">
+              Для завершения Этапа 1 + достижение 1,000 подписчиков
+            </p>
+
+            <div
+              style="
+                margin-top: 12px;
+                padding: 12px;
+                background: rgba(26, 31, 46, 0.6);
+                border-radius: 10px;
+                border: 1px solid rgba(0, 212, 255, 0.2);
+              "
+            >
+              <strong style="font-size: 13px">Детализация:</strong>
+              <ul style="margin-top: 8px; font-size: 12px">
+                <li style="padding: 3px 0">6 месяцев работы: €2,300-2,600</li>
+                <li style="padding: 3px 0">Аватары: ✅ Уже созданы ($29)</li>
+                <li style="padding: 3px 0">
+                  Буфер для тестирования: Включен выше
+                </li>
+              </ul>
+            </div>
+
+            <div
+              style="
+                margin-top: 12px;
+                padding: 12px;
+                background: rgba(20, 184, 166, 0.1);
+                border-radius: 10px;
+                border: 1px solid rgba(20, 184, 166, 0.3);
+              "
+            >
+              <strong style="font-size: 13px">График окупаемости:</strong>
+              <p style="margin-top: 8px; font-size: 12px; line-height: 1.4">
+                Монетизация Этапа 2 начинается на 5-6 месяце<br />Ожидаемая
+                выручка: €500-2,000/мес от генерации лидов
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Thank You & Contact -->
+      <div class="slide title-slide">
+        <h1>Спасибо!</h1>
+        <div
+          class="subtitle"
+          style="margin-top: 80px; font-size: 48px; font-weight: 300"
+        >
+          02.12.2025
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Hint (fades out after first interaction) -->
+    <div class="nav-hint" id="navHint">
+      Прокрутите или используйте стрелки ↓
+    </div>
+
+    <!-- Slide Progress Indicators -->
+    <div class="slide-indicators" id="slideIndicators"></div>
+
+    <!-- Fullscreen Modal -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+      <button class="close-modal" onclick="closeFullscreen()">✕</button>
+      <div class="fullscreen-content" id="fullscreenContent">
+        <div class="placeholder-screen" style="width: 80vw; height: 80vh">
+          Insert avatar video/image here
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Modern scroll-snap presentation with progress indicators
+      const slides = document.querySelectorAll(".slide");
+      const presentation = document.querySelector(".presentation");
+      const indicatorsContainer = document.getElementById("slideIndicators");
+      const navHint = document.getElementById("navHint");
+      let currentSlide = 0;
+
+      // Create slide indicators
+      slides.forEach((slide, index) => {
+        const dot = document.createElement("div");
+        dot.className = "slide-dot";
+        if (index === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => {
+          slides[index].scrollIntoView({ behavior: "smooth" });
+        });
+        indicatorsContainer.appendChild(dot);
+      });
+
+      // Update active indicator on scroll
+      let scrollTimeout;
+      presentation.addEventListener("scroll", () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const scrollPosition = presentation.scrollTop;
+          const slideHeight = window.innerHeight;
+          const newSlide = Math.round(scrollPosition / slideHeight);
+
+          if (newSlide !== currentSlide) {
+            document
+              .querySelectorAll(".slide-dot")
+              [currentSlide].classList.remove("active");
+            document
+              .querySelectorAll(".slide-dot")
+              [newSlide].classList.add("active");
+            currentSlide = newSlide;
+          }
+
+          // Hide nav hint after first scroll
+          if (navHint && scrollPosition > 50) {
+            navHint.style.display = "none";
+          }
+        }, 100);
+      });
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "PageDown") {
+          e.preventDefault();
+          if (currentSlide < slides.length - 1) {
+            slides[currentSlide + 1].scrollIntoView({ behavior: "smooth" });
+          }
+        } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+          e.preventDefault();
+          if (currentSlide > 0) {
+            slides[currentSlide - 1].scrollIntoView({ behavior: "smooth" });
+          }
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          slides[0].scrollIntoView({ behavior: "smooth" });
+        } else if (e.key === "End") {
+          e.preventDefault();
+          slides[slides.length - 1].scrollIntoView({ behavior: "smooth" });
+        }
+      });
+
+      // Tab switching function
+      function switchTab(event, tabId) {
+        // Hide all tab contents
+        document.querySelectorAll(".tab-content").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Remove active state from all buttons
+        document.querySelectorAll(".tab-button").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        // Show selected tab content
+        document.getElementById(tabId).classList.add("active");
+
+        // Add active state to clicked button
+        event.currentTarget.classList.add("active");
+      }
+
+      // Fullscreen modal functions for avatars
+      function openFullscreen(avatarType) {
+        const modal = document.getElementById("fullscreenModal");
+        const content = document.getElementById("fullscreenContent");
+
+        const videoSrc =
+          avatarType === "maya"
+            ? "assets/Maya_trends.mp4"
+            : "assets/Alex_Gradus_Cocktail.mp4";
+
+        content.innerHTML = `
+                <video
+                  src="${videoSrc}"
+                  controls
+                  autoplay
+                  style="max-width: 90vw; max-height: 90vh; object-fit: contain;"
+                >
+                </video>
+            `;
+
+        modal.classList.add("active");
+      }
+
+      function closeFullscreen() {
+        document.getElementById("fullscreenModal").classList.remove("active");
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeFullscreen();
+        }
+      });
+    </script>
+  </body>
+</html>
