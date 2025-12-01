@@ -32,6 +32,7 @@ body {
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .slide {
@@ -837,9 +838,14 @@ li:before {
 
 /* Mobile: 320px - 767px */
 @media screen and (max-width: 767px) {
+  .presentation {
+    scroll-snap-type: y proximity;
+  }
+
   .slide {
     padding: 30px 20px;
     justify-content: flex-start;
+    scroll-snap-stop: normal;
   }
 
   .title-slide {
