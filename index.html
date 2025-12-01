@@ -516,7 +516,15 @@
             onmouseover="this.style.transform='scale(1.02)'"
             onmouseout="this.style.transform='scale(1)'"
           />
-          <p style="margin-top: 15px; font-size: 14px; color: var(--text-medium); text-align: center;">
+          <p
+            class="mobile-only"
+            style="
+              margin-top: 15px;
+              font-size: 14px;
+              color: var(--text-medium);
+              text-align: center;
+            "
+          >
             Нажмите на шапку профиля для перехода на страницу
           </p>
         </div>
@@ -727,9 +735,7 @@
               <li style="font-size: 13px; padding: 4px 0">
                 Видеопродюсер ($500-1,000)
               </li>
-              <li style="font-size: 13px; padding: 4px 0">
-                Актер озвучки ($300-500)
-              </li>
+
               <li style="font-size: 13px; padding: 4px 0">
                 SMM-менеджер ($400-800)
               </li>
@@ -782,7 +788,7 @@
           class="savings-badge"
           style="margin-top: 15px; padding: 12px 25px; font-size: 20px"
         >
-          💰 Снижение затрат на 95%+
+          💰 В 20 раз дешевле
         </div>
       </div>
 
@@ -824,13 +830,13 @@
             </h2>
             <ul style="margin-top: 10px">
               <li style="font-size: 13px; padding: 5px 0">
-                <strong>AI-инструменты:</strong> €115-200/мес
+                <strong>AI-инструменты:</strong> $115-200/мес
               </li>
               <li style="font-size: 13px; padding: 5px 0">
-                <strong>Реклама:</strong> €300/мес
+                <strong>Реклама:</strong> $300/мес
               </li>
               <li style="font-size: 13px; padding: 5px 0">
-                <strong>Итого:</strong> €415-500/мес
+                <strong>Итого:</strong> $415-500/мес
               </li>
             </ul>
 
@@ -900,7 +906,7 @@
                 Интеграция Claude API успешна
               </li>
               <li style="font-size: 13px; padding: 5px 0">
-                Генерация скриптов для аватаров работает хорошо
+                Генерация скриптов для аватаров работает
               </li>
               <li style="font-size: 13px; padding: 5px 0">
                 Процесс одобрения через Telegram протестирован
@@ -929,7 +935,8 @@
               </li>
               <li style="font-size: 13px; padding: 5px 0">
                 <strong>LinkedIn:</strong> API недоступен частным разработчикам
-                → Решение: Повтор с корпоративными данными
+                → Решение: Повтор с корпоративными данными. Ecли нет, ручная
+                публикация
               </li>
               <li style="font-size: 13px; padding: 5px 0">
                 <strong>Генерация видео:</strong> Тестирование интеграции HeyGen
@@ -955,7 +962,7 @@
             <h3 style="font-size: 15px; margin-bottom: 10px">Стабилизация</h3>
             <ul>
               <li style="font-size: 12px; padding: 4px 0">
-                Деплой на Railway (продакшен)
+                Деплой на Render (продакшен)
               </li>
               <li style="font-size: 12px; padding: 4px 0">
                 Финализация интерфейса Telegram
@@ -965,9 +972,6 @@
               </li>
               <li style="font-size: 12px; padding: 4px 0">
                 Тестирование полного процесса
-              </li>
-              <li style="font-size: 12px; padding: 4px 0">
-                Начало органических публикаций (7/нед)
               </li>
               <li style="font-size: 12px; padding: 4px 0">
                 Повторная попытка доступа LinkedIn API
@@ -1015,7 +1019,7 @@
                 Анализ лучшего контента
               </li>
               <li style="font-size: 12px; padding: 4px 0">
-                Улучшение персонажей аватаров
+                Улучшение аватаров
               </li>
               <li style="font-size: 12px; padding: 4px 0">
                 Документирование результатов
@@ -1087,7 +1091,7 @@
                 <td style="padding: 6px; text-align: right">$89</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
-                <td style="padding: 6px">Railway Хостинг</td>
+                <td style="padding: 6px">Render Хостинг</td>
                 <td style="padding: 6px; text-align: right">$10-20</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.1)">
@@ -1136,7 +1140,7 @@
             >
               <strong style="font-size: 13px">Детализация:</strong>
               <ul style="margin-top: 8px; font-size: 12px">
-                <li style="padding: 3px 0">6 месяцев работы: €2,300-2,600</li>
+                <li style="padding: 3px 0">6 месяцев работы: $2,300-2,600</li>
                 <li style="padding: 3px 0">Аватары: ✅ Уже созданы ($29)</li>
                 <li style="padding: 3px 0">
                   Буфер для тестирования: Включен выше
@@ -1156,7 +1160,7 @@
               <strong style="font-size: 13px">График окупаемости:</strong>
               <p style="margin-top: 8px; font-size: 12px; line-height: 1.4">
                 Монетизация Этапа 2 начинается на 5-6 месяце<br />Ожидаемая
-                выручка: €500-2,000/мес от генерации лидов
+                выручка: $500-2,000/мес от генерации лидов
               </p>
             </div>
           </div>
