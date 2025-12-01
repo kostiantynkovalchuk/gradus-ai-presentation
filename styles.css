@@ -846,14 +846,9 @@ li:before {
     display: block;
   }
 
-  .presentation {
-    scroll-snap-type: y proximity;
-  }
-
   .slide {
     padding: 30px 20px;
     justify-content: flex-start;
-    scroll-snap-stop: normal;
   }
 
   .title-slide {
