@@ -983,6 +983,7 @@ li:before {
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    height: auto;
   }
 
   .avatar-profile {
@@ -991,6 +992,7 @@ li:before {
 
   .avatar-name {
     font-size: 36px !important;
+    margin-top: 0;
   }
 
   .avatar-role {
