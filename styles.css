@@ -767,6 +767,14 @@ li:before {
   box-shadow: 0 4px 20px rgba(20, 184, 166, 0.4);
 }
 
+/* GradusMedia website button */
+a[href*="gradusmedia.org"] {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 10;
+  position: relative;
+}
+
 /* ========================================
    MOBILE RESPONSIVE DESIGN
    Desktop design preserved above 1024px
@@ -1169,5 +1177,42 @@ li:before {
 
   .stat {
     font-size: 32px !important;
+  }
+
+  /* Ensure buttons are mobile-friendly */
+  a[href*="gradusmedia.org"] {
+    font-size: 14px !important;
+    padding: 10px 20px !important;
+    display: inline-block !important;
+    white-space: normal;
+    text-align: center;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  /* Mobile-friendly table overflow */
+  .card table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure slide content fits on mobile */
+  .slide {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Better spacing for highlight sections on mobile */
+  .highlight .grid-2 {
+    gap: 15px !important;
+  }
+
+  /* Fix avatar video sizing on mobile */
+  .avatar-phone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

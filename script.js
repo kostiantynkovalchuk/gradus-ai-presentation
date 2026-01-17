@@ -90,7 +90,7 @@ function openFullscreen(avatarType) {
   const videoSrc =
     avatarType === "maya"
       ? "assets/Maya_trends.mp4"
-      : "assets/Alex_Gradus_Cocktail.mp4";
+      : "assets/Alex Intro.mp4";
 
   content.innerHTML = `
         <video
